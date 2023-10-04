@@ -1,0 +1,24 @@
+package in.mindcraft.Dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import in.mindcraft.pojos.Customer;
+import in.mindcraft.utils.DBUtils;
+
+public class CustomerDao {
+	private Connection cn;
+	private PreparedStatement ps;
+	
+	public boolean addCustomer(Customer customer) throws SQLException, ClassNotFoundException{
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		cn = DBUtils.openConnection();
+		ps = cn.prepareStatement("insert into customers values(?,?,?,?)");
+		ps.setInt(1, Customer.getCustomerid());
+		ps.setString(2, email);
+		ps.setString(3, name);
+		ps.setString(4, pass);
+		
+	}
+}

@@ -1,0 +1,7 @@
+package in.mindcraft.pojos;
+
+public class Customer {
+	private int customer_id;
+	private String customer_email;
+	private String customer_name;
+}

@@ -1,0 +1,69 @@
+package in.mindcraft.Dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import in.mindcraft.pojos.Customer;
+import in.mindcraft.pojos.Product;
+import in.mindcraft.utils.DBUtils;
+
+public class ProductDao {
+	private Connection cn;
+	private PreparedStatement ps;
+	
+	public boolean addProduct(Product product) throws SQLException, ClassNotFoundException{
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		cn = DBUtils.openConnection();
+		ps = cn.prepareStatement("insert into products values(?,?,?,?,?)");
+		ps.setInt(1, product.getProduct_no());
+		ps.setString(2, product.getProduct_name());
+		ps.setInt(3, product.getProduct_price());
+		ps.setInt(4, product.getQuantity());
+		ps.setDouble(5, product.getDiscount());
+		if(ps.executeUpdate()>0) {
+			DBUtils.closeConnection();
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	
+	
+	public List<Product> getAllProducts() {
+        List<Product> products = new ArrayList<>();
+
+        try {
+        	Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection cn = DBUtils.openConnection();
+            PreparedStatement pst = cn.prepareStatement("SELECT * FROM products");
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("customer_id");
+                String email = rs.getString("customer_email");
+                String name = rs.getString("customer_name");
+                String pass = rs.getString("customer_pass");
+                double bal = rs.getDouble("customer_balance");
+
+                Customer customer = new Customer(id, email, name, pass, bal);
+                customers.add(customer);
+            }
+
+            rs.close();
+            pst.close();
+            cn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return customers;
+    }
+	
+	
+	
+}
